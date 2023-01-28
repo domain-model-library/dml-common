@@ -29,8 +29,8 @@ public abstract class TestSingletonRepository<T> {
         TypeVariable<Class<I>>[] typeVariables = itfType.getTypeParameters();
         TypeVariable<Class<I>> entityTypeVariable = typeVariables[0];
         Type[] entityTypeBounds = entityTypeVariable.getBounds();
-        Class entityType = (Class) entityTypeBounds[0];
-        String entityTypeDesc = "L" + entityType.getName().replace('.', '/') + ";";
+        String entityTypeName = entityTypeBounds[0].getTypeName();
+        String entityTypeDesc = "L" + entityTypeName.replace('.', '/') + ";";
         String templateEntityTypeDesc = "Ldml/test/repository/TemplateEntity;";
 
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("dml/test/repository/TemplateSingletonEntityRepositoryImpl.class");
@@ -61,7 +61,7 @@ public abstract class TestSingletonRepository<T> {
                     public void visitTypeInsn(final int opcode, final String type) {
                         String realType = type;
                         if (Opcodes.CHECKCAST == opcode) {
-                            realType = entityType.getName().replace('.', '/');
+                            realType = entityTypeName.replace('.', '/');
                         }
                         super.visitTypeInsn(opcode, realType);
                     }
