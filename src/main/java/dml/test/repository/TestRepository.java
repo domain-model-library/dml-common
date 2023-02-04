@@ -107,9 +107,9 @@ public abstract class TestRepository<E, ID> {
             }
         }, ClassReader.EXPAND_FRAMES);
 
-        byte[] enhancedBytes = cw.toByteArray();
-        Object[] argArray = new Object[]{newTypeClsName, enhancedBytes,
-                new Integer(0), new Integer(enhancedBytes.length)};
+        byte[] newClsBytes = cw.toByteArray();
+        Object[] argArray = new Object[]{newTypeClsName, newClsBytes,
+                new Integer(0), new Integer(newClsBytes.length)};
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         Class cls = null;
         try {
