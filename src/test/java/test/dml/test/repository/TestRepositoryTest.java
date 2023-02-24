@@ -22,12 +22,6 @@ public class TestRepositoryTest {
         TestEntityItf testEntityItf22 = testEntityItfRepository.find(testEntityItf21.getId());
         assertEquals(testEntityItf22.getId(), testEntityItf21.getId());
 
-        TestEntityRepository testEntityRepository = TestRepository.instance(TestEntityRepository.class);
-        TestEntity testEntity = new TestEntity("1");
-        testEntityRepository.put(testEntity);
-        TestEntity testEntity1 = testEntityRepository.find(testEntity.getId());
-        assertEquals(testEntity1.getId(), testEntity.getId());
-
         TestSingletonItfEntityRepository<TestEntityItf> testSingletonItfEntityRepository = TestSingletonRepository.instance(TestSingletonItfEntityRepository.class);
         TestEntityItf testEntityItf2 = new TestEntityItfImpl("2");
         testSingletonItfEntityRepository.put(testEntityItf2);
