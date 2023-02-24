@@ -1,15 +1,15 @@
 package test.dml.test.repository;
 
-public interface TestEntityRepository<T extends TestEntity, ID> {
-    T take(ID id);
+public interface TestEntityRepository {
+    TestEntity take(String id);
 
-    T find(ID id);
+    TestEntity find(String id);
 
-    void put(T entity);
+    void put(TestEntity entity);
 
-    T putIfAbsent(T entity);
+    TestEntity putIfAbsent(TestEntity entity);
 
-    T takeOrPutIfAbsent(ID id, T newEntity);
+    TestEntity takeOrPutIfAbsent(String id, TestEntity newEntity);
 
-    T remove(ID id);
+    TestEntity remove(String id);
 }

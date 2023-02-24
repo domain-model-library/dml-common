@@ -1,9 +1,9 @@
 package test.dml.test.repository;
 
-public class TestEntityImpl implements TestEntity {
+public class TestEntityItfImpl implements TestEntityItf {
     private String id;
 
-    public TestEntityImpl(String id) {
+    public TestEntityItfImpl(String id) {
         this.id = id;
     }
 

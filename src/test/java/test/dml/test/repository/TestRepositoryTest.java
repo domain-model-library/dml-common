@@ -10,17 +10,29 @@ public class TestRepositoryTest {
 
     @Test
     public void test() {
-        TestEntityRepository<TestEntity, Object> testEntityRepository = TestRepository.instance(TestEntityRepository.class);
-        TestEntity testEntity = new TestEntityImpl("1");
+        TestEntityItfRepository<TestEntityItf, Object> testEntityItfRepository = TestRepository.instance(TestEntityItfRepository.class);
+        TestEntityItf testEntityItf = new TestEntityItfImpl("1");
+        testEntityItfRepository.put(testEntityItf);
+        TestEntityItf testEntityItf1 = testEntityItfRepository.find(testEntityItf.getId());
+        assertEquals(testEntityItf1.getId(), testEntityItf.getId());
+
+        TestEntityItf2Repository<TestEntityItf2<?>, Object> testEntityItf2Repository = TestRepository.instance(TestEntityItf2Repository.class);
+        TestEntityItf2 testEntityItf21 = new TestEntityItf2Impl("1");
+        testEntityItf2Repository.put(testEntityItf21);
+        TestEntityItf testEntityItf22 = testEntityItfRepository.find(testEntityItf21.getId());
+        assertEquals(testEntityItf22.getId(), testEntityItf21.getId());
+
+        TestEntityRepository testEntityRepository = TestRepository.instance(TestEntityRepository.class);
+        TestEntity testEntity = new TestEntity("1");
         testEntityRepository.put(testEntity);
         TestEntity testEntity1 = testEntityRepository.find(testEntity.getId());
         assertEquals(testEntity1.getId(), testEntity.getId());
 
-        TestSingletonEntityRepository<TestEntity> testSingletonEntityRepository = TestSingletonRepository.instance(TestSingletonEntityRepository.class);
-        TestEntity testEntity2 = new TestEntityImpl("2");
-        testSingletonEntityRepository.put(testEntity2);
-        TestEntity testEntity3 = testSingletonEntityRepository.get();
-        assertEquals(testEntity3.getId(), testEntity2.getId());
+        TestSingletonItfEntityRepository<TestEntityItf> testSingletonItfEntityRepository = TestSingletonRepository.instance(TestSingletonItfEntityRepository.class);
+        TestEntityItf testEntityItf2 = new TestEntityItfImpl("2");
+        testSingletonItfEntityRepository.put(testEntityItf2);
+        TestEntityItf testEntityItf3 = testSingletonItfEntityRepository.get();
+        assertEquals(testEntityItf3.getId(), testEntityItf2.getId());
     }
 
 }

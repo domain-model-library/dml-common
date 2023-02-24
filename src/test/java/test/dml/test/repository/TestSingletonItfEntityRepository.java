@@ -1,6 +1,6 @@
 package test.dml.test.repository;
 
-public interface TestSingletonEntityRepository<T extends TestEntity> {
+public interface TestSingletonItfEntityRepository<T extends TestEntityItf> {
     T get();
 
     T take();

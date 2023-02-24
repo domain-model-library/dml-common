@@ -1,15 +1,18 @@
 package dml.test.repository;
 
-public interface TemplateEntityRepository<T extends TemplateEntity, ID> {
-    T take(ID id);
+/**
+ * @author zheng chengdong
+ */
+public interface TemplateEntityRepository {
+    TemplateEntity take(String id);
 
-    T find(ID id);
+    TemplateEntity find(String id);
 
-    void put(T entity);
+    void put(TemplateEntity entity);
 
-    T putIfAbsent(T entity);
+    TemplateEntity putIfAbsent(TemplateEntity entity);
 
-    T takeOrPutIfAbsent(ID id, T newEntity);
+    TemplateEntity takeOrPutIfAbsent(String id, TemplateEntity newEntity);
 
-    T remove(ID id);
+    TemplateEntity remove(String id);
 }

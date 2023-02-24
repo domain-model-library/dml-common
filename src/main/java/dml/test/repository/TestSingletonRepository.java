@@ -6,6 +6,7 @@ import org.objectweb.asm.commons.AdviceAdapter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 
@@ -29,17 +30,23 @@ public abstract class TestSingletonRepository<T> {
         TypeVariable<Class<I>>[] typeVariables = itfType.getTypeParameters();
         TypeVariable<Class<I>> entityTypeVariable = typeVariables[0];
         Type[] entityTypeBounds = entityTypeVariable.getBounds();
-        String entityTypeName = entityTypeBounds[0].getTypeName();
-        String entityTypeDesc = "L" + entityTypeName.replace('.', '/') + ";";
-        String templateEntityTypeDesc = "Ldml/test/repository/TemplateEntity;";
+        Type entityType = entityTypeBounds[0];
+        String entityTypeDesc;
+        if (entityType instanceof ParameterizedType){
+            entityTypeDesc= "L" +  ( (ParameterizedType)entityType).getRawType().getTypeName().replace('.', '/') + ";";
+        }else{
+            entityTypeDesc = "L" + entityType.getTypeName().replace('.', '/') + ";";
+        }
 
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("dml/test/repository/TemplateSingletonEntityRepositoryImpl.class");
+        String templateEntityTypeDesc = "Ldml/test/repository/TemplateEntityItf;";
+
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("dml/test/repository/TemplateSingletonEntityItfRepositoryImpl.class");
         byte[] bytes = new byte[0];
         try {
             bytes = new byte[is.available()];
             is.read(bytes);
         } catch (IOException e) {
-            throw new RuntimeException("read TemplateSingletonEntityRepositoryImpl.class error", e);
+            throw new RuntimeException("read TemplateSingletonEntityItfRepositoryImpl.class error", e);
         }
 
         String newTypeClsName = "dml.test.repository.generated." + itfType.getName();
@@ -61,7 +68,7 @@ public abstract class TestSingletonRepository<T> {
                     public void visitTypeInsn(final int opcode, final String type) {
                         String realType = type;
                         if (Opcodes.CHECKCAST == opcode) {
-                            realType = entityTypeName.replace('.', '/');
+                            realType = entityType.getTypeName().replace('.', '/');
                         }
                         super.visitTypeInsn(opcode, realType);
                     }

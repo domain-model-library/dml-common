@@ -1,4 +1,8 @@
 package dml.test.repository;
 
-public interface TemplateEntity {
+/**
+ * @author zheng chengdong
+ */
+public class TemplateEntity {
+    private Integer id;
 }
