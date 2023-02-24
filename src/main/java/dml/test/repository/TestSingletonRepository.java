@@ -12,7 +12,7 @@ import java.lang.reflect.TypeVariable;
 
 public abstract class TestSingletonRepository<T> {
 
-    private T entity;
+    protected T entity;
 
     public T get() {
         return entity;
@@ -32,9 +32,9 @@ public abstract class TestSingletonRepository<T> {
         Type[] entityTypeBounds = entityTypeVariable.getBounds();
         Type entityType = entityTypeBounds[0];
         String entityTypeDesc;
-        if (entityType instanceof ParameterizedType){
-            entityTypeDesc= "L" +  ( (ParameterizedType)entityType).getRawType().getTypeName().replace('.', '/') + ";";
-        }else{
+        if (entityType instanceof ParameterizedType) {
+            entityTypeDesc = "L" + ((ParameterizedType) entityType).getRawType().getTypeName().replace('.', '/') + ";";
+        } else {
             entityTypeDesc = "L" + entityType.getTypeName().replace('.', '/') + ";";
         }
 

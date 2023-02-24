@@ -5,14 +5,14 @@ import org.objectweb.asm.commons.AdviceAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.*;
 import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class TestRepository<E, ID> {
 
-    private Map<Object, E> data = new HashMap<>();
+    protected Map<Object, E> data = new HashMap<>();
 
     public E find(ID id) {
         return data.get(id);
@@ -67,9 +67,9 @@ public abstract class TestRepository<E, ID> {
         Type[] entityTypeBounds = entityTypeVariable.getBounds();
         Type entityType = entityTypeBounds[0];
         String entityTypeDesc;
-        if (entityType instanceof ParameterizedType){
-            entityTypeDesc= "L" +  ( (ParameterizedType)entityType).getRawType().getTypeName().replace('.', '/') + ";";
-        }else{
+        if (entityType instanceof ParameterizedType) {
+            entityTypeDesc = "L" + ((ParameterizedType) entityType).getRawType().getTypeName().replace('.', '/') + ";";
+        } else {
             entityTypeDesc = "L" + entityType.getTypeName().replace('.', '/') + ";";
         }
         String templateEntityTypeDesc = "Ldml/test/repository/TemplateEntityItf;";
