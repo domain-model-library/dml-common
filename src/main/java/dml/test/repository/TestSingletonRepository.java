@@ -21,8 +21,18 @@ public abstract class TestSingletonRepository<T> {
     }
 
     public static <I> I instance(Class<I> itfType) {
+        return instanceProxy(itfType, new TestSingletonRepository() {
+        });
+    }
+
+    public static <I> I instance(Class<I> itfType, Object entity) {
         TestSingletonRepository testSingletonRepository = new TestSingletonRepository() {
         };
+        testSingletonRepository.put(entity);
+        return instanceProxy(itfType, testSingletonRepository);
+    }
+
+    private static <I> I instanceProxy(Class<I> itfType, TestSingletonRepository testSingletonRepository) {
         I instance = (I) Proxy.newProxyInstance(testSingletonRepository.getClass().getClassLoader(), new Class[]{itfType},
                 new InvocationHandler() {
                     @Override
