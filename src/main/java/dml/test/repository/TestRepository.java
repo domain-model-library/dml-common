@@ -73,13 +73,11 @@ public abstract class TestRepository<E, ID> {
                             testRepositoryInstance.put(args[0]);
                             return null;
                         } else if ("putIfAbsent".equals(method.getName())) {
-                            testRepositoryInstance.putIfAbsent(args[0]);
-                            return null;
+                            return testRepositoryInstance.putIfAbsent(args[0]);
                         } else if ("takeOrPutIfAbsent".equals(method.getName())) {
                             return testRepositoryInstance.takeOrPutIfAbsent(args[0], args[1]);
                         } else if ("remove".equals(method.getName())) {
-                            testRepositoryInstance.remove(args[0]);
-                            return null;
+                            return testRepositoryInstance.remove(args[0]);
                         } else {
                             throw new UnsupportedOperationException(method.getName());
                         }
