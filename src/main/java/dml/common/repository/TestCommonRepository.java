@@ -1,4 +1,4 @@
-package dml.test.repository;
+package dml.common.repository;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -7,26 +7,31 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class TestRepository<E, ID> {
+public abstract class TestCommonRepository<E, ID> implements CommonRepository<E, ID> {
 
     protected Map<Object, E> data = new HashMap<>();
 
+    @Override
     public E find(ID id) {
         return data.get(id);
     }
 
+    @Override
     public E take(ID id) {
         return data.get(id);
     }
 
+    @Override
     public void put(E entity) {
         data.put(getId(entity), entity);
     }
 
+    @Override
     public E putIfAbsent(E entity) {
         return data.putIfAbsent(getId(entity), entity);
     }
 
+    @Override
     public E takeOrPutIfAbsent(ID id, E newEntity) {
         E entity = take(id);
         if (entity != null) {
@@ -39,6 +44,7 @@ public abstract class TestRepository<E, ID> {
         return newEntity;
     }
 
+    @Override
     public E remove(ID id) {
         return data.remove(id);
     }
@@ -59,7 +65,7 @@ public abstract class TestRepository<E, ID> {
     }
 
     public static <I> I instance(Class<I> itfType) {
-        TestRepository testRepositoryInstance = new TestRepository() {
+        TestCommonRepository testRepositoryInstance = new TestCommonRepository() {
         };
         I instance = (I) Proxy.newProxyInstance(testRepositoryInstance.getClass().getClassLoader(), new Class[]{itfType},
                 new InvocationHandler() {
