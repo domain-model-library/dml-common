@@ -67,6 +67,7 @@ public abstract class TestCommonRepository<E, ID> implements CommonRepository<E,
                 throw new RuntimeException("can not find id field in entity class " + entityClass.getName());
             }
         }
+        idField.setAccessible(true);
 
         try {
             return (ID) idField.get(entity);
