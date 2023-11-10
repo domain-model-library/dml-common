@@ -50,13 +50,24 @@ public abstract class TestCommonRepository<E, ID> implements CommonRepository<E,
     }
 
     private ID getId(E entity) {
-        Field idField;
-        try {
-            idField = entity.getClass().getDeclaredField("id");
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException("getDeclaredField 'id' error", e);
+        //取名称为“id”的field作为id field，如果不存在 “id” field，那么取第一个field作为id field
+        Field idField = null;
+        Class entityClass = entity.getClass();
+        Field[] fields = entityClass.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equals("id")) {
+                idField = field;
+                break;
+            }
         }
-        idField.setAccessible(true);
+        if (idField == null) {
+            if (fields.length > 0) {
+                idField = fields[0];
+            } else {
+                throw new RuntimeException("can not find id field in entity class " + entityClass.getName());
+            }
+        }
+
         try {
             return (ID) idField.get(entity);
         } catch (IllegalAccessException e) {
