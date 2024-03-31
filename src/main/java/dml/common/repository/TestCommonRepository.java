@@ -4,8 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class TestCommonRepository<E, ID> implements CommonRepository<E, ID> {
 
@@ -53,7 +52,7 @@ public abstract class TestCommonRepository<E, ID> implements CommonRepository<E,
         //取名称为“id”的field作为id field，如果不存在 “id” field，那么取第一个field作为id field
         Field idField = null;
         Class entityClass = entity.getClass();
-        Field[] fields = entityClass.getDeclaredFields();
+        Field[] fields = getAllFields(entityClass);
         for (Field field : fields) {
             if (field.getName().equals("id")) {
                 idField = field;
@@ -74,6 +73,19 @@ public abstract class TestCommonRepository<E, ID> implements CommonRepository<E,
         } catch (IllegalAccessException e) {
             throw new RuntimeException("get value of idField error", e);
         }
+    }
+
+    private Field[] getAllFields(Class<?> clazz) {
+        List<Field> fieldList = new ArrayList<>();
+        while (clazz != null && clazz != Object.class) {
+            // 获取当前类的所有声明字段，并添加到列表中
+            Field[] declaredFields = clazz.getDeclaredFields();
+            fieldList.addAll(Arrays.asList(declaredFields));
+            // 获取当前类的父类，准备继续获取父类的字段
+            clazz = clazz.getSuperclass();
+        }
+        // 将列表转换为数组并返回
+        return fieldList.toArray(new Field[0]);
     }
 
     public static <I> I instance(Class<I> itfType) {
