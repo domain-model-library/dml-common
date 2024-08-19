@@ -1,15 +1,15 @@
 package dml.common.repository;
 
 public interface CommonRepository<E, ID> {
-    E take(ID var1);
+    E take(ID id);
 
-    E find(ID var1);
+    E find(ID id);
 
-    void put(E var1);
+    void put(E entity);
 
-    E putIfAbsent(E var1);
+    E putIfAbsent(E entity);
 
-    E takeOrPutIfAbsent(ID var1, E var2);
+    E takeOrPutIfAbsent(ID id, E entity);
 
-    E remove(ID var1);
+    E remove(ID id);
 }
