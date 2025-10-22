@@ -23,6 +23,33 @@ public abstract class TestCommonSingletonRepository<T> implements CommonSingleto
         this.entity = entity;
     }
 
+    @Override
+    public T remove() {
+        T temp = this.entity;
+        this.entity = null;
+        return temp;
+    }
+
+    @Override
+    public T putIfAbsent(T entity) {
+        if (this.entity == null) {
+            this.entity = entity;
+            return null;
+        } else {
+            return this.entity;
+        }
+    }
+
+    @Override
+    public T takeOrPutIfAbsent(T newEntity) {
+        if (this.entity == null) {
+            this.entity = newEntity;
+            return newEntity;
+        } else {
+            return this.entity;
+        }
+    }
+
     public static <I> I instance(Class<I> itfType) {
         return instanceProxy(itfType, new TestCommonSingletonRepository() {
         });
@@ -47,6 +74,12 @@ public abstract class TestCommonSingletonRepository<T> implements CommonSingleto
                         } else if ("put".equals(method.getName())) {
                             testSingletonRepository.put(args[0]);
                             return null;
+                        } else if ("remove".equals(method.getName())) {
+                            return testSingletonRepository.remove();
+                        } else if ("putIfAbsent".equals(method.getName())) {
+                            return testSingletonRepository.putIfAbsent(args[0]);
+                        } else if ("takeOrPutIfAbsent".equals(method.getName())) {
+                            return testSingletonRepository.takeOrPutIfAbsent(args[0]);
                         } else {
                             throw new UnsupportedOperationException(method.getName());
                         }

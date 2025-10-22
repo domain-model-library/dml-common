@@ -5,5 +5,11 @@ public interface CommonSingletonRepository<E> {
 
     E take();
 
-    void put(E var1);
+    void put(E entity);
+
+    E putIfAbsent(E entity);
+
+    E takeOrPutIfAbsent(E newEntity);
+    
+    E remove();
 }
